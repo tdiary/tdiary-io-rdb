@@ -6,7 +6,7 @@ describe TDiary::IO::Rdb do
   end
 
   describe "#save_cgi_conf and #load_cgi_conf" do
-    let(:conf) { Dummy.new }
+    let(:conf) { DummyConf.new }
 
     it { expect(TDiary::IO::Rdb.load_cgi_conf(conf)).to be_empty }
 
@@ -23,6 +23,33 @@ describe TDiary::IO::Rdb do
         end
         it { expect(TDiary::IO::Rdb.load_cgi_conf(conf)).to eq 'bar' }
       end
+    end
+  end
+
+  describe "#transaction" do
+    let(:io) { TDiary::IO::Rdb.new(DummyTDiary.new) }
+    let(:today) { Time.now.strftime( '%Y%m%d' ) }
+    let(:diary) do
+      d = DummyStyle.new
+      d.title = "foo"
+      d.to_src = "bar"
+      d
+    end
+
+    before do
+      io.transaction( Time.now ) do |diaries|
+        @diaries = diaries
+        @diaries[today] = diary
+        TDiary::TDiaryBase::DIRTY_DIARY
+      end
+    end
+
+    subject { io.send(:db)[:diaries].filter(today).first }
+
+    it "inserted diary" do
+      expect(subject).to_not be_nil
+      expect(subject[:title]).to eq "foo"
+      expect(subject[:body]).to eq "bar"
     end
   end
 end
