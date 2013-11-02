@@ -29,13 +29,17 @@ class DummyTDiary
   end
 
   def ignore_parser_cache
-    true
+    false
   end
 end
 
 class DummyConf
   def database_url
     'sqlite://./tdiary_test.db'
+  end
+
+  def cache_path
+    nil
   end
 end
 
@@ -59,8 +63,7 @@ class DummyStyle
     true
   end
 
-  def show(dummy)
-  end
+  def show(dummy); end
 end
 
 RSpec.configure do |c|
