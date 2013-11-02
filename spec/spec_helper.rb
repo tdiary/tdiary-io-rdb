@@ -15,6 +15,10 @@ module TDiary
       def initialize(tdiary)
         @tdiary = tdiary
       end
+
+      def style(style)
+        DummyStyle
+      end
     end
   end
 end
@@ -38,6 +42,11 @@ end
 class DummyStyle
   attr_accessor :title, :to_src
 
+  def initialize(id, title, body, last_modified)
+    @title = title
+    @to_src = body
+  end
+
   def style
     "dummy"
   end
@@ -48,6 +57,9 @@ class DummyStyle
 
   def visible?
     true
+  end
+
+  def show(dummy)
   end
 end
 

@@ -29,12 +29,7 @@ describe TDiary::IO::Rdb do
   describe "#transaction" do
     let(:io) { TDiary::IO::Rdb.new(DummyTDiary.new) }
     let(:today) { Time.now.strftime( '%Y%m%d' ) }
-    let(:diary) do
-      d = DummyStyle.new
-      d.title = "foo"
-      d.to_src = "bar"
-      d
-    end
+    let(:diary) { DummyStyle.new('', "foo", "bar", '') }
 
     before do
       io.transaction( Time.now ) do |diaries|
@@ -46,10 +41,40 @@ describe TDiary::IO::Rdb do
 
     subject { io.send(:db)[:diaries].filter(today).first }
 
-    it "inserted diary" do
+    it "insert diary" do
       expect(subject).to_not be_nil
       expect(subject[:title]).to eq "foo"
       expect(subject[:body]).to eq "bar"
+    end
+
+    it "restore diary" do
+      io.transaction( Time.now ) do |diaries|
+        @diaries = diaries
+        expect(@diaries[today].title).to eq "foo"
+        expect(@diaries[today].to_src).to eq "bar"
+        TDiary::TDiaryBase::DIRTY_DIARY
+      end
+    end
+
+    context "update diary" do
+      let(:diary2) { DummyStyle.new('' , "bar", "foo", '') }
+
+      before do
+        io.transaction( Time.now ) do |diaries|
+          @diaries = diaries
+          @diaries[today] = diary2
+          TDiary::TDiaryBase::DIRTY_DIARY
+        end
+      end
+
+      subject { io.send(:db)[:diaries].filter(today) }
+
+      it "update contents of diary" do
+        expect(subject).to_not be_nil
+        expect(subject.count).to eq 1
+        expect(subject.first[:title]).to eq "bar"
+        expect(subject.first[:body]).to eq "foo"
+      end
     end
   end
 end
