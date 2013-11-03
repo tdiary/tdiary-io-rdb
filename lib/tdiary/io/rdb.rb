@@ -23,7 +23,7 @@ module TDiary
       def restore_comment(diaries)
         diaries.each do |date, diary_object|
           db[:comments].filter(:diary_id => date).order_by(:no).select(:name, :mail, :last_modified, :visible, :comment).each do |row|
-            comment = Comment.new(row[:name], row[:mail], row[:comment], Time.at(row[:last_modified].to_i))
+            comment = TDiary::Comment.new(row[:name], row[:mail], row[:comment], Time.at(row[:last_modified].to_i))
             comment.show = row[:visible]
             diary_object.add_comment(comment)
           end
