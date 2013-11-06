@@ -1,6 +1,6 @@
-# Tdiary::Io::Rdb
+# TDiary::IO::Rdb
 
-TODO: Write a gem description
+RDB like sqlite, mysql and postgresql adapter for tDiary
 
 ## Installation
 
@@ -18,7 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add follow snipet to your tdiary.conf
+
+```ruby
+@io_class = TDiary::IO::Rdb
+```
 
 ## Contributing
 
