@@ -36,15 +36,15 @@ module TDiary
           diary.each_comment(diary.count_comments(true)) do |com|
             no += 1
             date = {
-              :diary_id => diary_id,
-              :no => no
+              diary_id: diary_id,
+              no: no
             }
             body = {
-              :name => com.name,
-              :mail => com.mail,
-              :last_modified => com.date.to_i,
-              :visible => com.visible?,
-              :comment => com.body
+              name: com.name,
+              mail: com.mail,
+              last_modified: com.date.to_i,
+              visible: com.visible?,
+              comment: com.body
             }
             comment = db[:comments].filter(date)
             if comment.count > 0
@@ -95,28 +95,28 @@ module TDiary
           @@_db ||= Sequel.connect(conf.database_url || ENV['DATABASE_URL'])
 
           @@_db.create_table :conf do
-            String :body, :text => true
+            String :body, text: true
           end unless @@_db.table_exists?(:conf)
 
           @@_db.create_table :diaries do
-            String :diary_id, :size => 8
-            String :year, :size => 4
-            String :month, :size => 2
-            String :day, :size => 2
-            String :title, :text => true
-            String :body, :text => true
-            String :style, :text => true
+            String :diary_id, size: 8
+            String :year, size: 4
+            String :month, size: 2
+            String :day, size: 2
+            String :title, text: true
+            String :body, text: true
+            String :style, text: true
             Fixnum :last_modified
             TrueClass :visible
             primary_key :diary_id
           end unless @@_db.table_exists?(:diaries)
 
           @@_db.create_table :comments do
-            String :diary_id, :size => 8
+            String :diary_id, size: 8
             Fixnum :no
-            String :name, :text => true
-            String :mail, :text => true
-            String :comment, :text => true
+            String :name, text: true
+            String :mail, text: true
+            String :comment, text: true
             Fixnum :last_modified
             TrueClass :visible
             primary_key [:diary_id, :no]
@@ -164,7 +164,7 @@ module TDiary
       def restore(date, diaries, month = true)
         query = db[:diaries].select(:diary_id, :title, :last_modified, :visible, :body, :style)
         query = if month && /(\d\d\d\d)(\d\d)(\d\d)/ =~ date
-                  query.filter(:year => $1, :month => $2)
+                  query.filter(:year => $1, month: $2)
                 else
                   query.filter(:diary_id => date)
                 end
@@ -184,18 +184,18 @@ module TDiary
         diaries.each do |diary_id, diary|
           date = if /(\d\d\d\d)(\d\d)(\d\d)/ =~ diary_id
                    {
-              :year => $1,
-              :month => $2,
-              :day => $3,
-              :diary_id => diary_id
+              year: $1,
+              month: $2,
+              day: $3,
+              diary_id: diary_id
             }
                  end
           body = {
-            :title => diary.title,
-            :last_modified => diary.last_modified.to_i,
-            :style => diary.style,
-            :visible => diary.visible?,
-            :body => diary.to_src
+            title: diary.title,
+            last_modified: diary.last_modified.to_i,
+            style: diary.style,
+            visible: diary.visible?,
+            body: diary.to_src
           }
 
           entry = db[:diaries].filter(date)
