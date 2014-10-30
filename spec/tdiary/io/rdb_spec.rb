@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TDiary::IO::Rdb do
   it 'is_a TDiary::IO::Base' do
-    expect { TDiary::IO::Rdb.is_a?(TDiary::IO::Base) }.to be_true
+    expect(TDiary::IO::Rdb.new(DummyTDiary.new)).to be_a(TDiary::IO::Base)
   end
 
   describe "#save_cgi_conf and #load_cgi_conf" do
