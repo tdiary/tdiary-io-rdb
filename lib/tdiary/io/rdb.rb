@@ -92,7 +92,12 @@ module TDiary
         end
 
         def db(conf)
-          @@_db ||= Sequel.connect(conf.database_url || ENV['DATABASE_URL'])
+          @@_db ||= Sequel.connect(conf.database_url || ENV['DATABASE_URL']).tap{|db|
+            db.extension(:connection_validator)
+            db.pool.connection_validation_timeout = -1
+          }
+
+          @@_db.test_connection
 
           @@_db.create_table :conf do
             String :body, text: true
