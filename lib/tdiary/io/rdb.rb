@@ -104,7 +104,7 @@ module TDiary
           end unless @@_db.table_exists?(:conf)
 
           @@_db.create_table :diaries do
-            String :diary_id, size: 8
+            String :diary_id, size: 8, primary_key: true
             String :year, size: 4
             String :month, size: 2
             String :day, size: 2
@@ -113,7 +113,6 @@ module TDiary
             String :style, text: true
             Fixnum :last_modified
             TrueClass :visible
-            primary_key :diary_id
           end unless @@_db.table_exists?(:diaries)
 
           @@_db.create_table :comments do
