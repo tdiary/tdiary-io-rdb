@@ -1,5 +1,7 @@
 # TDiary::IO::Rdb
 
+[![Gem Version](https://badge.fury.io/rb/tdiary-io-rdb.png)](https://rubygems.org/gems/tdiary-io-rdb) [![Build Status](https://secure.travis-ci.org/tdiary/tdiary-io-rdb.png)](https://travis-ci.org/tdiary/tdiary-io-rdb)
+
 RDB like sqlite, mysql and postgresql adapter for tDiary
 
 ## Installation
