@@ -6,17 +6,13 @@ RDB like sqlite, mysql and postgresql adapter for tDiary
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your tDiary's Gemfile.local:
 
     gem 'tdiary-io-rdb'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install tdiary-io-rdb
 
 ## Usage
 
